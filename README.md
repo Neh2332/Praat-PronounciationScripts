@@ -97,5 +97,5 @@ Examples of the scripts in action comparing two AI Generated Voices of EricGood1
 
 ## Requirements
 
-*   **Praat software:** Version 6.0 or later recommended ([https://www.praat.org/](https://www.fon.hum.uva.nl/praat/)).
+*   **Praat software:** Latest Version Recommended ([https://www.praat.org/](https://www.fon.hum.uva.nl/praat/)).
 *   **Audio Files:** A reference audio file and a user audio file for comparison, ideally in WAV or AIFF format.
