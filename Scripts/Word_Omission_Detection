@@ -1,0 +1,150 @@
+# Praat Script: Word Omission Detection
+# Compares user speech to a reference to detect likely word omissions
+# based on the number of speech segments and overall duration.
+
+# 1. Select Reference Sound File
+pauseScript: "Click OK to select the REFERENCE sound file (correct pronunciation)"
+reference$ = chooseReadFile$: "Select reference sound file"
+if reference$ = ""
+    exitScript: "No reference file selected. Script terminated."
+endif
+reference = Read from file: reference$
+reference_name$ = selected$("Sound")
+
+# 2. Select User Sound File
+pauseScript: "Click OK to select the USER sound file (pronunciation to evaluate)"
+user$ = chooseReadFile$: "Select user sound file"
+if user$ = ""
+    exitScript: "No user file selected. Script terminated."
+endif
+user = Read from file: user$
+user_name$ = selected$("Sound")
+
+# 3. Analyze Reference Sound for Duration and Speech Segments
+selectObject: reference
+ref_duration = Get total duration
+
+# Create TextGrid based on silences to count speech segments
+# Parameters: pitch floor (Hz), time step (0=auto), silence threshold (dB),
+# min silent interval (s), min sounding interval (s), silent label, sounding label
+To TextGrid (silences): 100, 0, -25, 0.1, 0.05, "silent", "sounding"
+reference_textgrid = selected("TextGrid")
+
+selectObject: reference_textgrid
+ref_num_intervals = Get number of intervals: 1
+ref_speech_segments = 0
+
+# Count sounding segments in reference
+for i from 1 to ref_num_intervals
+    selectObject: reference_textgrid
+    label$ = Get label of interval: 1, i
+    if label$ = "sounding"
+        ref_speech_segments = ref_speech_segments + 1
+    endif
+endfor
+
+# 4. Analyze User Sound for Duration and Speech Segments
+selectObject: user
+user_duration = Get total duration
+
+# Create TextGrid based on silences to count speech segments
+To TextGrid (silences): 100, 0, -25, 0.1, 0.05, "silent", "sounding"
+user_textgrid = selected("TextGrid")
+
+selectObject: user_textgrid
+user_num_intervals = Get number of intervals: 1
+user_speech_segments = 0
+
+# Count sounding segments in user recording
+for i from 1 to user_num_intervals
+    selectObject: user_textgrid
+    label$ = Get label of interval: 1, i
+    if label$ = "sounding"
+        user_speech_segments = user_speech_segments + 1
+    endif
+endfor
+
+# 5. Calculate Duration Ratio and Check for Omission Conditions
+if ref_duration > 0
+    duration_ratio = user_duration / ref_duration
+else
+    # If reference duration is zero, the ratio is undefined or meaningless.
+    # We can set it to 0 for the subsequent check, assuming zero duration implies no speech.
+    duration_ratio = 0
+endif
+
+# Condition for likely word omission:
+# Fewer speech segments in user recording AND user recording is noticeably shorter (e.g., < 90% of ref duration)
+word_omissions_likely = (user_speech_segments < ref_speech_segments and duration_ratio < 0.9 and duration_ratio <> 0)
+
+
+# 6. Display Results --- UX ENHANCEMENTS BELOW ---
+clearinfo
+appendInfoLine: "WORD OMISSION DETECTION RESULTS"
+appendInfoLine: "============================="
+appendInfoLine: "This script checks if the user might have omitted words compared to the reference,"
+appendInfoLine: "by looking at the number of speech chunks and the overall recording length."
+appendInfoLine: ""
+appendInfoLine: "Comparing Files:"
+appendInfoLine: "  Reference file: ", reference_name$
+appendInfoLine: "  User file:      ", user_name$
+appendInfoLine: ""
+appendInfoLine: "Key Metrics Analyzed:"
+appendInfoLine: "  Reference duration: ", fixed$(ref_duration, 3), " seconds"
+appendInfoLine: "  User duration:      ", fixed$(user_duration, 3), " seconds"
+appendInfoLine: "  Duration ratio (User/Ref): ", fixed$(duration_ratio, 2), " (A value < 1 means user recording is shorter)"
+appendInfoLine: ""
+appendInfoLine: "  Reference speech segments (chunks of sound): ", ref_speech_segments
+appendInfoLine: "  User speech segments (chunks of sound):      ", user_speech_segments
+appendInfoLine: "  (Fewer user segments can indicate omissions)"
+appendInfoLine: ""
+
+appendInfoLine: "--------------------"
+appendInfoLine: "DETECTION ASSESSMENT:"
+appendInfoLine: "--------------------"
+
+# Provide clearer explanations based on the detection result
+if word_omissions_likely
+    appendInfoLine: "-> LIKELY word omission(s) detected."
+    appendInfoLine: ""
+    appendInfoLine: "   Why? Two factors point towards omissions:"
+    appendInfoLine: "     1. Fewer Speech Segments: The user recording has fewer chunks of sound (", user_speech_segments, ") than the reference (", ref_speech_segments, ")."
+    percentage_shorter = (1 - duration_ratio) * 100
+    appendInfoLine: "     2. Significantly Shorter Duration: The user recording is ", fixed$(percentage_shorter, 1), "% shorter (ratio ", fixed$(duration_ratio, 2), "), meeting the threshold (< 0.9) for significant shortness."
+    appendInfoLine: ""
+    appendInfoLine: "   Conclusion: The combination of fewer speech segments and a significantly shorter duration strongly suggests words might be missing."
+
+else
+    appendInfoLine: "-> Word omissions NOT detected based on this analysis."
+    appendInfoLine: ""
+    appendInfoLine: "   Why?"
+    # Explain exactly why omissions were *not* detected
+    if user_speech_segments >= ref_speech_segments
+        appendInfoLine: "     - The user recording has an equal or greater number of speech segments (", user_speech_segments, ") compared to the reference (", ref_speech_segments, ")."
+        appendInfoLine: "       This primary condition for omission was not met."
+    elsif duration_ratio >= 0.9
+         appendInfoLine: "     - Although the user has fewer speech segments (", user_speech_segments, " vs ", ref_speech_segments, "), the user recording's duration is NOT significantly shorter."
+         appendInfoLine: "       The duration ratio is ", fixed$(duration_ratio, 2), ", which is above the threshold (>= 0.9) used to indicate potential omission based on length."
+    else
+         # Handle edge case where duration_ratio was 0 (e.g., zero ref duration)
+         appendInfoLine: "     - The analysis criteria for omission were not met (possibly due to zero reference duration or other edge cases)."
+    endif
+    appendInfoLine: ""
+    appendInfoLine: "   Conclusion: The combination of factors needed to suggest omissions (fewer segments AND significantly shorter duration) was not found."
+
+endif
+
+appendInfoLine: ""
+appendInfoLine: "--------------------"
+appendInfoLine: "Important Note:"
+appendInfoLine: "  This detection is an estimation based on automatic silence detection."
+appendInfoLine: "  Its accuracy depends heavily on clear recordings (minimal background noise)"
+appendInfoLine: "  and how well the silence detection parameters (-25 dB threshold, 0.1s min silence) match the actual speech patterns."
+appendInfoLine: "  Consider listening to both recordings for confirmation."
+appendInfoLine: "--------------------"
+
+# 7. Clean up created objects
+removeObject: reference, user, reference_textgrid, user_textgrid
+
+appendInfoLine: ""
+appendInfoLine: "Script finished."

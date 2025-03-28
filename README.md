@@ -68,18 +68,22 @@ Each script will output results to the Praat Info window, typically including:
 *   **Reasoning:** Crucially, the output explains *why* a detection was flagged or not, by referring to the calculated metrics and comparing them against the thresholds defined within the script (e.g., duration ratio < 0.9, segment count difference, pause score < 70, average formant difference > 25%).
 *   **Explanatory Notes:** The output includes notes reminding the user about the nature of the analysis (acoustic estimation) and its dependency on recording quality and analysis parameters.
 
-Examples of the scripts in action comparing two AI Generated Voices
+Examples of the scripts in action comparing two AI Generated Voices of EricGood1.wav and LiamGood2.wav
 
 **`Word_Omission_Detection.praat`**
+
 ![image](https://github.com/user-attachments/assets/c65d40b4-b17c-4ade-8eda-b8832b508c5f)
 
 **`Word_Insertion_Detection.praat`**
+
 ![image](https://github.com/user-attachments/assets/16aca52b-e26a-4d87-865c-9b01880ec325)
 
 **`Abnormal_Breaks_Detection.praat`**
+
 ![image](https://github.com/user-attachments/assets/5c376859-d731-4ba4-9a86-0d37f2e128fe)
 
 **`Mispronunciation_Detection_Formant.praat`**
+
 ![image](https://github.com/user-attachments/assets/d231b4c5-0848-488e-9d93-b5513050ef73)
 
 
