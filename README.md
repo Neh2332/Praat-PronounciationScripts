@@ -91,9 +91,7 @@ Examples of the scripts in action comparing two AI Generated Voices of EricGood1
 
 *   **Acoustic Analysis Only:** These scripts operate purely on the acoustic signal. They do not understand language, grammar, or context. A detected "segment" might not perfectly correspond to a word or syllable.
 *   **Sensitivity to Recording Quality:** Background noise, low volume, or microphone variations can significantly impact the accuracy of silence detection, segment counting, and formant analysis. Use clear, comparable recordings where possible.
-*   **Parameter Dependency:** The accuracy of segmentation (`To TextGrid (silences)`) and formant analysis (`To Formant (burg)`) depends on parameters set within the scripts (e.g., silence threshold, formant ceilings). These default values may not be optimal for all speakers, languages, or recording conditions.
-*   **Formant Analysis Simplification:** The mispronunciation script only analyzes F1/F2 at three specific time points. It doesn't analyze consonant sounds, dynamic formant movements, or other acoustic cues relevant to pronunciation. Formant tracking itself can be error-prone.
-*   **Fixed Thresholds:** The thresholds used for detection (e.g., 0.9/1.1 duration ratio, pause count difference > 1, pause score < 70, formant difference > 25%) are heuristic values. They might be too strict or too lenient depending on the specific application and may require adjustment for optimal performance.
+*   **Single Pair Processing:** Each script run processes exactly *one* pair of audio files (one reference, one user) selected interactively. They do not support batch processing of multiple files or comparisons involving more than two files simultaneously.
 *   **Not a Comprehensive Assessment:** These scripts provide isolated checks. They do not offer an overall pronunciation score or analyze aspects like intonation, stress, or rhythm beyond the specific metrics calculated (e.g., average pause duration).
 
 
