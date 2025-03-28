@@ -99,7 +99,3 @@ Examples of the scripts in action comparing two AI Generated Voices of EricGood1
 
 *   **Praat software:** Version 6.0 or later recommended ([https://www.praat.org/](https://www.fon.hum.uva.nl/praat/)).
 *   **Audio Files:** A reference audio file and a user audio file for comparison, ideally in WAV or AIFF format.
-
-## License
-
-These scripts are provided under the MIT License. See the LICENSE file (if included) or refer to the standard MIT License terms. You are free to use, modify, and distribute them, but they come with no warranty.
