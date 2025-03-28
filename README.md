@@ -6,7 +6,7 @@ This repository contains a set of four scripts designed to be run in the **Praat
 
 ## What is Praat?
 
-[Praat](https://www.praat.org/) (Dutch for "talk") is a free, cross-platform scientific software package extensively used by linguists, phoneticians, and speech scientists for the analysis, synthesis, and manipulation of speech and other sounds. It offers powerful visualization tools (like spectrograms and waveforms) and a wide array of functions for acoustic measurement (pitch, formants, intensity, duration, etc.). Praat also includes a scripting language that allows users to automate complex analysis tasks, which is what these scripts utilize.
+[Praat](https://www.fon.hum.uva.nl/praat/) (Dutch for "talk") is a free, cross-platform scientific software package extensively used by linguists, phoneticians, and speech scientists for the analysis, synthesis, and manipulation of speech and other sounds. It offers powerful visualization tools (like spectrograms and waveforms) and a wide array of functions for acoustic measurement (pitch, formants, intensity, duration, etc.). Praat also includes a scripting language that allows users to automate complex analysis tasks, which is what these scripts utilize.
 
 ## How These Scripts Can Be Useful
 
@@ -40,7 +40,7 @@ This set includes four distinct scripts, each focusing on a specific aspect:
 
 ## How to Use the Scripts
 
-1.  **Install Praat:** Download and install Praat from the official website: [https://www.praat.org/](https://www.praat.org/)
+1.  **Install Praat:** Download and install Praat from the official website: [https://www.praat.org/](https://www.fon.hum.uva.nl/praat/)
 2.  **Prepare Audio Files:** You need two audio files for each comparison:
     *   A **Reference** file: The target pronunciation (e.g., recorded by a native speaker).
     *   A **User** file: The pronunciation you want to evaluate.
@@ -99,7 +99,7 @@ Examples of the scripts in action comparing two AI Generated Voices of EricGood1
 
 ## Requirements
 
-*   **Praat software:** Version 6.0 or later recommended ([https://www.praat.org/](https://www.praat.org/)).
+*   **Praat software:** Version 6.0 or later recommended ([https://www.praat.org/](https://www.fon.hum.uva.nl/praat/)).
 *   **Audio Files:** A reference audio file and a user audio file for comparison, ideally in WAV or AIFF format.
 
 ## License
